@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from api import database, crud
 
 import engines.lenna_standard as lenna_standard
-model = lenna_standard.Model() # our language model
+model = lenna_standard.Model([TRANSFORMER-PATH]) # our language model - DOWNLOAD-HERE-https://github.com/kingoflolz/mesh-transformer-jax/#gpt-j-6b
 
 import engines.ibm_translate_lite as ibm_translate
 translate = ibm_translate.Translate() # the translator model
