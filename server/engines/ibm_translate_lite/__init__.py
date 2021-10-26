@@ -5,8 +5,8 @@ from requests.auth import HTTPBasicAuth
 
 class Translate:
     def __init__(self):
-        self.service = "https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/8275e17d-10e7-4bf9-8212-f20f7713914f"
-        self.authorization = HTTPBasicAuth("apikey", "FnWQPodXcaA9llHrXpea7q6vxBxu2S5aezVAIBeCrEOt")
+        self.service = "https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/[REPLACE WITH YOUR IBM INSTANCE]"
+        self.authorization = HTTPBasicAuth("apikey", "[REPLACE WITH YOUR API KEY]")
 
     def translate(self, text, source_language, target_language):
         t1 = time.time()
