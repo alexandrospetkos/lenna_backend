@@ -11,7 +11,7 @@ from api import database, crud
 
 import engines.lenna_standard as lenna_standard
 import engines.lenna_gate as lenna_gate
-model = lenna_gate.Model()
+model = lenna_standard.Model()
 
 import engines.ibm_translate_lite as ibm_translate
 translate = ibm_translate.Translate()
