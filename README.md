@@ -1,8 +1,8 @@
 # lenna_backend
 
 Requirements:
-  TPU type (v2)
-  25GB High Speed RAM
+  - TPU type (v2)
+  - 25GB High Speed RAM
  
 Instructions:
   To run the backend script __init__.py you have to replace the [IBM INSTANCE] and [IBM API KEY] inside the server/engines/ibm_translate_lite/__init__.py
