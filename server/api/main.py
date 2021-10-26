@@ -1,4 +1,3 @@
-### uvicorn main:app --reload
 import os
 import datetime
 import json
@@ -10,15 +9,16 @@ from sqlalchemy.orm import Session
 from api import database, crud
 
 import engines.lenna_standard as lenna_standard
-import engines.lenna_gate as lenna_gate
-model = lenna_standard.Model()
+model = lenna_standard.Model() # our language model
 
 import engines.ibm_translate_lite as ibm_translate
-translate = ibm_translate.Translate()
+translate = ibm_translate.Translate() # the translator model
 
 print(datetime.datetime.now())
 
 app = FastAPI(openapi_url=None)
+
+# Enable CORS
 
 origins = ["*"]
 
@@ -29,7 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.get('/')
 def index(db: Session = Depends(database.get_db)):
@@ -44,7 +43,8 @@ def conv_append(key: str,
 	sample_count: int = 2,
 	memory_size: int = 2, 
 	memory_append: bool = False, db: Session = Depends(database.get_db)):
-
+	
+	#### make sure the values given are within a certain range ###
 	sample_count, memory_size = max(0, min(3, sample_count)), max(0, min(3, memory_size))
 
 	#### Get user_id using params::key ###
@@ -73,23 +73,25 @@ def conv_append(key: str,
 		kb_header = lenna_standard.kb_headers[kb_contents["format"]];
 
 		if configuration.basic_language == "1":
-			sl_utterance = translate.translate(utterance, source_language="el", target_language="en")
+			sl_utterance = translate.translate(utterance, source_language="el", target_language="en") #### translate to en ###
 		else:
 			sl_utterance = utterance
-
+		
+		#### create the promt ###
 		context = kb_header["context"] + kb_contents["context"] + lenna_standard.dialog_pair_list_convert(kb_header["paradigms"] + 
 			kb_contents["paradigms"]) + lenna_standard.dialog_pair_list_convert(qg_contents, k1="request", k2="response") +  lenna_standard.dialog_pair_format(" " + sl_utterance, "", spacing="")
 
-		response, duration = model.generate(context)
+		response, duration = model.generate(context) #### run the language model ###
 		response = response[0]
 
 		if configuration.basic_language == "1":
-			tl_response = translate.translate(response, source_language="en", target_language="el")
+			tl_response = translate.translate(response, source_language="en", target_language="el") #### translate to el ###
 		else:
 			tl_response = response
 		print(tl_response)
 
 		print(user_id, conv_id, sl_utterance, response, int(memory_append), datetime.datetime.now())
+		#### store the query inside the query group ###
 		crud.new_user_qgroup_content(db, user_id, conv_id, sl_utterance, response, int(memory_append), datetime.datetime.now())
 
 		return {'STATUS' : 'OK', 'RESPONSE' : tl_response, 'CANDIDATES': None, 'DURATION': duration}
@@ -100,14 +102,17 @@ def conv_append(key: str,
 
 @app.get('/conv_create', status_code=201)
 def conv_create(key: str, db: Session = Depends(database.get_db)):
+	#### Get user_id using params::key ###
 	try: user_id = crud.get_user_from_key(db, key) 
 	except: raise HTTPException(status_code=400, detail="PARAMS::KEY INVALID")
 
+	#### Get user's configuration using user_id ###
 	try:
 		configuration = crud.get_conf_from_user(db, user_id)
 		default_greeting = configuration.basic_greeting
 	except: raise HTTPException(status_code=500, detail="INTERNAL ERROR")
 
+	#### Create new query group to store individual queries ###
 	try: 
 		qgroup_id = crud.get_user_qgroup_collection(db, user_id, None, 0)[0]
 		qgroup_id = (qgroup_id + 1) if qgroup_id != None else 0
