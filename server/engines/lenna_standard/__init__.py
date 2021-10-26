@@ -1,10 +1,6 @@
 import time
-import numpy as np
+import numpy as npimport jax
 
-try:
-    import jax
-except:
-    print("engines::lenna_standard Warning, << import jax >> failed")
 
 class Model:
     def __init__(self, pretrained):
