@@ -3,6 +3,10 @@ from sqlalchemy.orm import relationship
 
 from api.database import Base
 
+##########
+## The following classes are database structures
+##########
+
 class User(Base):
     __tablename__ = "users"
 
