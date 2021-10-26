@@ -2,6 +2,6 @@
 
 Instructions:
 
-To run the backend script __init__.py you have to replace the following keys:
+To run the backend script __ init __.py you have to replace the following keys:
 - nlpcloud api key
 - ibm translate api key
