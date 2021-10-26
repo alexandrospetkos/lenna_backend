@@ -5,7 +5,7 @@ import requests
 class Model:
     def __init__(self):
         self.service = "https://api.nlpcloud.io/v1/gpu/gpt-j/generation"
-        self.authorization = { "Authorization" : "Token fb1c3e8990338de9811440e2c45def6c88add5c0" }
+        self.authorization = { "Authorization" : "Token REPLACE WITH YOUR TOKEN" }
 
     def generate(self, text, 
         max_length=32, 
