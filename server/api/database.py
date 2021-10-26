@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-dbc = { "username": "u311585670_ma3stro", "password": "06151525Alex8969", "hostname": "109.106.246.101", "database": "u311585670_master" }
+dbc = { "username": "", "password": "", "hostname": "", "database": "" }
 
 Engine = create_engine("mysql://" + 
 	dbc['username'] + ":" + dbc['password'] + "@" + 
