@@ -1,7 +1,7 @@
 # lenna_backend
 
 Requirements:
-  - TPU type (v2)
+  - > 4GB Nvidia Graphics Card
   - 25GB High Speed RAM
  
 Instructions:
