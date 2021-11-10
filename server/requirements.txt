@@ -3,3 +3,4 @@ sqlalchemy
 mysqlclient
 uvicorn
 pyngrok
+transformers
