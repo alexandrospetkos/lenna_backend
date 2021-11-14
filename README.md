@@ -1,6 +1,6 @@
 # lenna_backend
 
-Requirements:
+Recommended Requirements:
   -  8GB Nvidia Graphics Card
   - 25GB High Speed RAM
  
