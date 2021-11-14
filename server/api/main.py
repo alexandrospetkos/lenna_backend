@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from api import database, crud
 
 import engines.lenna_standard as lenna_standard
-model = lenna_standard.Model([TRANSFORMER-PATH]) # our language model - DOWNLOAD-HERE-https://github.com/kingoflolz/mesh-transformer-jax/#gpt-j-6b
+model = lenna_standard.Model() # the transformer model
 
 import engines.ibm_translate_lite as ibm_translate
 translate = ibm_translate.Translate() # the translator model
@@ -76,13 +76,8 @@ def conv_append(key: str,
 			sl_utterance = translate.translate(utterance, source_language="el", target_language="en") #### translate to en ###
 		else:
 			sl_utterance = utterance
-		
-		#### create the promt ###
-		context = kb_header["context"] + kb_contents["context"] + lenna_standard.dialog_pair_list_convert(kb_header["paradigms"] + 
-			kb_contents["paradigms"]) + lenna_standard.dialog_pair_list_convert(qg_contents, k1="request", k2="response") +  lenna_standard.dialog_pair_format(" " + sl_utterance, "", spacing="")
 
-		response, duration = model.generate(context) #### run the language model ###
-		response = response[0]
+		response, duration = model.generate_simple(utterance) #### run the language model ###
 
 		if configuration.basic_language == "1":
 			tl_response = translate.translate(response, source_language="en", target_language="el") #### translate to el ###
