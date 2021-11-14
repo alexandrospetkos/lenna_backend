@@ -23,3 +23,7 @@ class Model:
         response = self.tokenizer.batch_decode(reply_ids)
 
         return " ".join(response[0].split("<s>")[1].split("</s>")[0].split()), time.time()-t1
+    
+mdl = Model()
+response, duration = mdl.generate_simple("Hi how are you?")
+print(response)
